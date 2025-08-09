@@ -1,10 +1,7 @@
 package com.example.entity;
 
 import com.fasterxml.jackson.annotation.JsonBackReference;
-import jdk.jshell.Snippet;
 import lombok.*;
-
-import javax.management.relation.Role;
 import javax.persistence.*;
 import java.time.LocalDateTime;
 import java.util.UUID;
@@ -14,8 +11,6 @@ import java.util.UUID;
 @AllArgsConstructor
 @NoArgsConstructor
 @Builder
-@Getter
-@Setter
 @Table(name = "Account")
 public class Account {
 
@@ -35,7 +30,7 @@ public class Account {
     private LocalDateTime  logOutAt;
     @Enumerated(EnumType.STRING)
     @Column(name = "Status")
-    private Status AccountStatus;
+    private Status accountStatus;
     @Enumerated(EnumType.STRING)
     @Column(name = "User_Role")
     private UserRole role;

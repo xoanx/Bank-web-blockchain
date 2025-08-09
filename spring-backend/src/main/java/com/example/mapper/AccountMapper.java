@@ -18,7 +18,7 @@ public class AccountMapper {
                 .accountNumber(accountDto.getAccountNumber())
                 .logInAt(accountDto.getLogInAt())
                 .logOutAt(accountDto.getLogOutAt())
-                .AccountStatus(accountDto.getAccountStatus())
+                .accountStatus(accountDto.getAccountStatus())
                 .role(accountDto.getRole())
                 .build();
     }

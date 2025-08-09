@@ -12,7 +12,7 @@ import com.example.entity.Account.Status;
 public class AccountDto {
     private String accountNumber;
     private LocalDateTime logInAt;
-    private LocalDateTime  logOutAt;
-    private Status AccountStatus;
+    private LocalDateTime logOutAt;
+    private Status accountStatus;
     private UserRole role;
 }
