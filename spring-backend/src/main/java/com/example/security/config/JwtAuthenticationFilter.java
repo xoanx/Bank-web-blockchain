@@ -20,10 +20,10 @@ public class JwtAuthenticationFilter extends OncePerRequestFilter {
 
     private static final Logger logger = LoggerFactory.getLogger(JwtAuthenticationFilter.class);
 
-    private final com.yourpackage.security.jwt.JwtTokenProvider jwtTokenProvider;
+    private final JwtTokenProvider jwtTokenProvider;
     private final UserDetailsService userDetailsService;
 
-    public JwtAuthenticationFilter(com.yourpackage.security.jwt.JwtTokenProvider jwtTokenProvider,
+    public JwtAuthenticationFilter(JwtTokenProvider jwtTokenProvider,
                                    UserDetailsService userDetailsService) {
         this.jwtTokenProvider = jwtTokenProvider;
         this.userDetailsService = userDetailsService;
@@ -51,7 +51,7 @@ public class JwtAuthenticationFilter extends OncePerRequestFilter {
                         );
 
                 SecurityContextHolder.getContext().setAuthentication(authentication);
-                logger.debug("JWT xác thực thành công cho user: {}", username);
+                logger.debug("Authenticated JWT user: {}", username);
             }
         } catch (Exception ex) {
             logger.error("Không thể thiết lập xác thực người dùng trong Security Context", ex);

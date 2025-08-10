@@ -1,4 +1,4 @@
-package com.yourpackage.security.jwt;
+package com.example.security.config;
 
 import io.jsonwebtoken.*;
 import io.jsonwebtoken.security.Keys;
@@ -53,7 +53,7 @@ public class JwtTokenProvider {
                 .getSubject();
     }
 
-    // Kiểm tra token hợp lệ không
+    // Check token hợp lệ không
     public boolean validateToken(String token) {
         try {
             Jwts.parserBuilder()
@@ -62,15 +62,15 @@ public class JwtTokenProvider {
                     .parseClaimsJws(token);
             return true;
         } catch (ExpiredJwtException e) {
-            logger.error("JWT token đã hết hạn: {}", e.getMessage());
+            logger.error("JWT is not expired: {}", e.getMessage());
         } catch (UnsupportedJwtException e) {
-            logger.error("JWT không được hỗ trợ: {}", e.getMessage());
+            logger.error("JWT is not supported: {}", e.getMessage());
         } catch (MalformedJwtException e) {
-            logger.error("JWT token không hợp lệ: {}", e.getMessage());
+            logger.error("JWT token is not accepted: {}", e.getMessage());
         } catch (SignatureException e) {
-            logger.error("Chữ ký JWT không hợp lệ: {}", e.getMessage());
+            logger.error("Reject Signature JWT: {}", e.getMessage());
         } catch (IllegalArgumentException e) {
-            logger.error("JWT claims string trống: {}", e.getMessage());
+            logger.error("JWT null: {}", e.getMessage());
         }
         return false;
     }
