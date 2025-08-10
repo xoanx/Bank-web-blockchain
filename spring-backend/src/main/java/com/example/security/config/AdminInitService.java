@@ -32,7 +32,7 @@ public class AdminInitService {
         }
 
         if (accountRepository.findByUsername(adminUsername).isPresent()) {
-            return "✅ Admin đã tồn tại.";
+            return "Admin already exists!";
         }
 
         Account admin = Account.builder()
@@ -46,6 +46,6 @@ public class AdminInitService {
                 .build();
 
         accountRepository.save(admin);
-        return "🎉 Admin đã được tạo thành công!";
+        return "Admin has been created successfully!";
     }
 }
