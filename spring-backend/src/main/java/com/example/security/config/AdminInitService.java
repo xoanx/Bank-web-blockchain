@@ -3,7 +3,7 @@ package com.example.security.config;
 import com.example.entity.Account;
 import com.example.repository.AccountRepository;
 import lombok.RequiredArgsConstructor;
-import lombok.Value;
+import org.springframework.beans.factory.annotation.Value;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Component;
 import org.springframework.stereotype.Service;
@@ -15,7 +15,7 @@ import java.time.LocalDateTime;
 @RequiredArgsConstructor
 public class AdminInitService {
     private final AccountRepository accountRepository;
-    @Value (staticConstructor = "${app.admin.master-key}")
+    @Value ("${app.admin.master-key}")
     private String masterKey;
 
     @Value("${app.admin.username}")
@@ -28,7 +28,7 @@ public class AdminInitService {
 
     public String createAdminIfNotExists(String providedKey) {
         if (!masterKey.equals(providedKey)) {
-            return "Master key không hợp lệ!";
+            return "Master key invalid!";
         }
 
         if (accountRepository.findByUsername(adminUsername).isPresent()) {
