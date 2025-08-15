@@ -1,11 +1,10 @@
-package com.example.security.config;
+package config;
 
 //Cấu hình SecurityConfig để đăng ký filter này vào chuỗi filter của Spring
 
 import lombok.RequiredArgsConstructor;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.ComponentScan;
-import org.springframework.context.annotation.ComponentScans;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.security.authentication.AuthenticationManager;
 import org.springframework.security.authentication.AuthenticationProvider;

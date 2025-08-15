@@ -1,4 +1,4 @@
-package com.example.security.config;
+package config;
 import com.example.entity.Account;
 import lombok.RequiredArgsConstructor;
 import org.springframework.security.core.GrantedAuthority;
