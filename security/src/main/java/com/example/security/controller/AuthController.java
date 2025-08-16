@@ -1,7 +1,8 @@
-package config;
+package com.example.security.controller;
 
 import com.example.entity.Account;
 import com.example.repository.AccountRepository;
+import com.example.security.config.JwtTokenProvider;
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
@@ -25,6 +26,7 @@ public class AuthController {
     private final AccountRepository accountRepository;
     private final BCryptPasswordEncoder passwordEncoder;
 
+    //Login
     @PostMapping ("/login")
     public ResponseEntity<?> login(@RequestBody Map<String, String> body) {
         String username = body.get("username");
@@ -38,6 +40,7 @@ public class AuthController {
         }
     }
 
+    //Register
     @PostMapping("/register")
     public ResponseEntity<?> register(@RequestBody Map<String, String> body) {
         String username = body.get("username");

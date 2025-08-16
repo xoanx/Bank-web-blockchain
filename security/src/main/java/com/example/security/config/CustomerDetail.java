@@ -1,4 +1,4 @@
-package config;
+package com.example.security.config;
 import com.example.entity.Account;
 import lombok.RequiredArgsConstructor;
 import org.springframework.security.core.GrantedAuthority;
@@ -16,7 +16,7 @@ public class CustomerDetail implements UserDetails{
     @Override
     public Collection<? extends GrantedAuthority> getAuthorities() {
         return Collections.singletonList(
-                new SimpleGrantedAuthority (account.getRole().name())
+                new SimpleGrantedAuthority ("ROLE:"+account.getRole().name())
         );
     }
 

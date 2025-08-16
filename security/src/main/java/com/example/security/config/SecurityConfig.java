@@ -1,4 +1,4 @@
-package config;
+package com.example.security.config;
 
 //Cấu hình SecurityConfig để đăng ký filter này vào chuỗi filter của Spring
 
@@ -30,6 +30,7 @@ public class SecurityConfig {
     private final CustomUserDetailsService customUserDetailsService;
     private final JwtAuthenticationFilter jwtAuthenticationFilter;
 
+    // Config rule
     @Bean
     public SecurityFilterChain securityFilterChain(HttpSecurity http) throws Exception {
         return http
@@ -67,7 +68,7 @@ public class SecurityConfig {
         provider.setPasswordEncoder(passwordEncoder());
         return provider;
     }
-
+    // Hash password (BCrypt)
     @Bean
     public BCryptPasswordEncoder passwordEncoder() {
         return new BCryptPasswordEncoder();

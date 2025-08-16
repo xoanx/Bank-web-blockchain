@@ -1,4 +1,4 @@
-package config;
+package com.example.security.config;
 
 import com.example.entity.Account;
 import com.example.repository.AccountRepository;

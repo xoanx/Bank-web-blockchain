@@ -1,4 +1,4 @@
-package config;
+package com.example.security.config;
 
 import io.jsonwebtoken.*;
 import io.jsonwebtoken.security.Keys;
@@ -18,7 +18,7 @@ public class JwtTokenProvider {
     private final Key secretKey;
     private final long validityInMilliseconds;
 
-    // Load key và expiration từ application.properties
+    // Load key and expiration from application.properties
     public JwtTokenProvider(
             @Value("${jwt.secret}") String secret,
             @Value("${jwt.expiration}") long validityInMilliseconds
@@ -27,7 +27,7 @@ public class JwtTokenProvider {
         this.validityInMilliseconds = validityInMilliseconds;
     }
 
-    // Tạo token mới
+    // Create new token with username
     public String generateToken(String username) {
         Date now = new Date();
         Date expiryDate = new Date(now.getTime() + validityInMilliseconds);
@@ -43,7 +43,7 @@ public class JwtTokenProvider {
         return token;
     }
 
-    // Lấy username từ token
+    // Get username in token
     public String getUsernameFromToken(String token) {
         return Jwts.parserBuilder()
                 .setSigningKey(secretKey)
@@ -53,7 +53,7 @@ public class JwtTokenProvider {
                 .getSubject();
     }
 
-    // Check token hợp lệ không
+    // Check token valid or invalid
     public boolean validateToken(String token) {
         try {
             Jwts.parserBuilder()
