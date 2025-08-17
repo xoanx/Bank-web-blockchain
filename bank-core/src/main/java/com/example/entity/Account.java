@@ -1,5 +1,7 @@
 package com.example.entity;
 
+import com.example.enums.AccountStatus;
+import com.example.enums.UserRole;
 import com.fasterxml.jackson.annotation.JsonBackReference;
 import lombok.*;
 import javax.persistence.*;
@@ -30,16 +32,10 @@ public class Account {
     private LocalDateTime  logOutAt;
     @Enumerated(EnumType.STRING)
     @Column(name = "Status")
-    private Status accountStatus;
+    private AccountStatus accountStatus;
     @Enumerated(EnumType.STRING)
     @Column(name = "User_Role")
     private UserRole role;
-    public enum UserRole {
-        ADMIN, USER, CLIENT, BANK
-    }
-    public enum Status {
-        ACTIVE, INACTIVE, SUSPENDED
-    }
 
     @ManyToOne
     @JoinColumn(name = "id_person")

@@ -2,6 +2,7 @@ package com.example.entity;
 
 import javax.persistence.*;
 
+import com.example.enums.ContractStatus;
 import com.fasterxml.jackson.annotation.JsonBackReference;
 import lombok.*;
 
@@ -34,10 +35,7 @@ public class Contract {
     private LocalDateTime lastUpdatedAt;
     @Enumerated(EnumType.STRING)
     @Column(name = "Status")
-    private Status status;
-    public enum Status {
-        ACTIVE, EXPIRED
-    }
+    private ContractStatus status;
     @ManyToOne
     @JoinColumn(name = "id_person")
     @JsonBackReference

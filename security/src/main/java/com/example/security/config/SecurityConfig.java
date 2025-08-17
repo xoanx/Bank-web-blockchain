@@ -42,7 +42,11 @@ public class SecurityConfig {
                             new AntPathRequestMatcher("/swagger-ui/**"),
                             new AntPathRequestMatcher("/v3/api-docs/**")
                     ).permitAll()
-                    .anyRequest().authenticated()
+                        //role-bassed
+                        .requestMatchers ("/api/admin/**").hasRole("ADMIN")
+                        .requestMatchers ("/api/client/**").hasRole("CLIENT")
+                        .requestMatchers ("/api/bank/**").hasRole("BANK")
+                        .anyRequest().authenticated()
                 )
                 .exceptionHandling(ex -> ex
                         .authenticationEntryPoint((request, response, authException) -> {

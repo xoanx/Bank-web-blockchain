@@ -1,6 +1,6 @@
 package com.example.dto;
 
-import com.example.entity.Contract;
+import com.example.enums.ContractStatus;
 import lombok.*;
 import java.time.LocalDateTime;
 import java.util.UUID;
@@ -18,5 +18,5 @@ public class ContractDto {
     private String message;
     private LocalDateTime createdAt;
     private LocalDateTime lastUpdatedAt;
-    private Contract.Status status;
+    private ContractStatus status;
 }

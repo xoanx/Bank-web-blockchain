@@ -1,9 +1,9 @@
 package com.example.dto;
 
+import com.example.enums.AccountStatus;
+import com.example.enums.UserRole;
 import lombok.*;
 import java.time.LocalDateTime;
-import com.example.entity.Account.UserRole;
-import com.example.entity.Account.Status;
 
 @NoArgsConstructor
 @AllArgsConstructor
@@ -13,6 +13,6 @@ public class AccountDto {
     private String accountNumber;
     private LocalDateTime logInAt;
     private LocalDateTime logOutAt;
-    private Status accountStatus;
+    private AccountStatus accountStatus;
     private UserRole role;
 }

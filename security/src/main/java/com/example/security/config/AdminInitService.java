@@ -1,6 +1,8 @@
 package com.example.security.config;
 
 import com.example.entity.Account;
+import com.example.enums.AccountStatus;
+import com.example.enums.UserRole;
 import com.example.repository.AccountRepository;
 import lombok.RequiredArgsConstructor;
 import org.springframework.beans.factory.annotation.Value;
@@ -22,7 +24,7 @@ public class AdminInitService {
     private String adminUsername;
 
     @Value("${app.admin.password}")
-    private String adminPassword;
+    private String adminPassword; 
     private final PasswordEncoder passwordEncoder;
 
 
@@ -41,8 +43,8 @@ public class AdminInitService {
                 .passwordHash(passwordEncoder.encode(adminPassword))
                 .logInAt(LocalDateTime.now())
                 .logOutAt(LocalDateTime.now())
-                .accountStatus(Account.Status.ACTIVE)
-                .role(Account.UserRole.ADMIN)
+                .accountStatus(AccountStatus.ACTIVE)
+                .role(UserRole.ADMIN)
                 .build();
 
         accountRepository.save(admin);

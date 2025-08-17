@@ -1,5 +1,6 @@
 package com.example.security.config;
 import com.example.entity.Account;
+import com.example.enums.AccountStatus;
 import lombok.RequiredArgsConstructor;
 import org.springframework.security.core.GrantedAuthority;
 import org.springframework.security.core.authority.SimpleGrantedAuthority;
@@ -38,7 +39,7 @@ public class CustomerDetail implements UserDetails{
 
     @Override
     public boolean isAccountNonLocked() {
-        return account.getAccountStatus() != Account.Status.SUSPENDED;
+        return account.getAccountStatus() != AccountStatus.SUSPENDED;
     }
 
     @Override
@@ -48,6 +49,6 @@ public class CustomerDetail implements UserDetails{
 
     @Override
     public boolean isEnabled() {
-        return account.getAccountStatus() == Account.Status.ACTIVE;
+        return account.getAccountStatus() == AccountStatus.ACTIVE;
     }
 }
