@@ -1,6 +1,7 @@
 package com.example.dto;
 
 import com.example.enums.AccountStatus;
+import com.example.enums.StatusTransfer;
 import com.example.enums.UserRole;
 import lombok.*;
 import java.time.LocalDateTime;
@@ -15,4 +16,6 @@ public class AccountDto {
     private LocalDateTime logOutAt;
     private AccountStatus accountStatus;
     private UserRole role;
+    private StatusTransfer statusTransfer;
+    private String currency;
 }

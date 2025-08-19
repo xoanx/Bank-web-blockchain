@@ -1,10 +1,12 @@
 package com.example.entity;
 
 import com.example.enums.AccountStatus;
+import com.example.enums.StatusTransfer;
 import com.example.enums.UserRole;
 import com.fasterxml.jackson.annotation.JsonBackReference;
 import lombok.*;
 import javax.persistence.*;
+import java.math.BigDecimal;
 import java.time.LocalDateTime;
 import java.util.UUID;
 
@@ -36,7 +38,13 @@ public class Account {
     @Enumerated(EnumType.STRING)
     @Column(name = "User_Role")
     private UserRole role;
-
+    @Enumerated(EnumType.STRING)
+    @Column(name = "balance", precision = 19, scale = 2, nullable = false)
+    private BigDecimal balance;
+    @Column(name = "currency", nullable = false)
+    private String currency;
+    @Column(name = "status_transfer", nullable = false)
+    private StatusTransfer statusTransfer;
     @ManyToOne
     @JoinColumn(name = "id_person")
     @JsonBackReference

@@ -24,7 +24,7 @@ public class AdminInitService {
     private String adminUsername;
 
     @Value("${app.admin.password}")
-    private String adminPassword; 
+    private String adminPassword;
     private final PasswordEncoder passwordEncoder;
 
 
