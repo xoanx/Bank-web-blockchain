@@ -3,5 +3,6 @@ public enum UserRole {
     ADMIN,
     USER,
     CLIENT,
-    BANK
+    BANK,
+    STAFF
 }

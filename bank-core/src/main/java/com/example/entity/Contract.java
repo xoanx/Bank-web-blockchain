@@ -23,19 +23,26 @@ public class Contract {
     @GeneratedValue(strategy = GenerationType.AUTO)
     @Column(name = "ID_Contract")
     private UUID idContract;
-    @Column(name = "Contract_Address", length =100, nullable = false)
+
+    @Column(name = "Contract_Address", length = 100, nullable = false)
     private String contractAddress;
+
     @Column(name = "Contract_Name", length = 50, nullable = false)
     private String contractName;
-    @Column(name = "Message", length =50, nullable = false)
+
+    @Column(name = "Message", length = 200)
     private String message;
-    @Column(name = "Create_At", length = 20, nullable = false)
+
+    @Column(name = "Create_At", nullable = false)
     private LocalDateTime createdAt;
-    @Column(name = "Last_Updated_At", length = 20, nullable = false)
+
+    @Column(name = "Last_Updated_At")
     private LocalDateTime lastUpdatedAt;
+
     @Enumerated(EnumType.STRING)
     @Column(name = "Status")
     private ContractStatus status;
+
     @ManyToOne
     @JoinColumn(name = "id_person")
     @JsonBackReference

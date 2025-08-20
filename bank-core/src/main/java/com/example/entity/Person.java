@@ -22,30 +22,41 @@ public class Person {
     @GeneratedValue(strategy = GenerationType.AUTO)
     @Column(name = "ID_Person")
     private UUID idPerson;
+
     @Column(name = "First_Name", length = 50, nullable = false)
     private String firstName;
-    @Column(name ="Last_Name", length = 50, nullable = false)
+
+    @Column(name = "Last_Name", length = 50, nullable = false)
     private String lastName;
-    @Column(name = "Birthdate", length =20, nullable = false)
+
+    @Column(name = "Birthdate", nullable = false)
     private LocalDate birthDate;
+
     @Column(name = "Email", length = 100, nullable = false, unique = true)
     private String email;
+
     @Column(name = "Phone_Number", length = 50, nullable = false)
     private String phoneNumber;
+
     @Column(name = "Address", length = 100, nullable = false)
     private String address;
+
     @Column(name = "Tax_Number", length = 50, nullable = false, unique = true)
     private String taxIdentificationNumber;
-    @Column(name = "Created_At", length =20, nullable = false, unique = true)
+
+    @Column(name = "Created_At", nullable = false)
     private LocalDateTime createdAt;
-    @Column(name = "Updated_At", length =20, nullable = false, unique = true)
-    private LocalDateTime  updatedAt;
-    @Column(name = "Expired_At", length =20, nullable = false, unique = true)
-    private LocalDateTime  expiredAt;
+
+    @Column(name = "Updated_At", nullable = false)
+    private LocalDateTime updatedAt;
+
+    @Column(name = "Expired_At")
+    private LocalDateTime expiredAt;
 
     @OneToMany(mappedBy = "person", cascade = CascadeType.ALL)
     @JsonManagedReference
     private List<Account> accounts;
+
     @OneToMany(mappedBy = "person", cascade = CascadeType.ALL)
     @JsonManagedReference
     private List<Contract> contracts;

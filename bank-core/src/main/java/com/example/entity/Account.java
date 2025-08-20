@@ -1,7 +1,6 @@
 package com.example.entity;
 
 import com.example.enums.AccountStatus;
-import com.example.enums.StatusTransfer;
 import com.example.enums.UserRole;
 import com.fasterxml.jackson.annotation.JsonBackReference;
 import lombok.*;
@@ -22,29 +21,36 @@ public class Account {
     @GeneratedValue(strategy = GenerationType.AUTO)
     @Column(name = "Id_Account")
     private UUID idAccount;
-    @Column(name = "Account_Number", length = 50, nullable = false)
+
+    @Column(name = "Account_Number", length = 50, nullable = false, unique = true)
     private String accountNumber;
-    @Column(name = "User_Name", length = 50, nullable = false)
+
+    @Column(name = "User_Name", length = 50, nullable = false, unique = true)
     private String username;
-    @Column(name = "Password_Hash", length = 50, nullable = false)
+
+    @Column(name = "Password_Hash", nullable = false)
     private String passwordHash;
-    @Column(name = "Log_In", length = 20, nullable = false)
+
+    @Column(name = "Log_In")
     private LocalDateTime logInAt;
-    @Column(name = "Log_Out", length = 20, nullable = false)
-    private LocalDateTime  logOutAt;
+
+    @Column(name = "Log_Out")
+    private LocalDateTime logOutAt;
+
     @Enumerated(EnumType.STRING)
-    @Column(name = "Status")
+    @Column(name = "Status", nullable = false)
     private AccountStatus accountStatus;
+
     @Enumerated(EnumType.STRING)
-    @Column(name = "User_Role")
+    @Column(name = "User_Role", nullable = false)
     private UserRole role;
-    @Enumerated(EnumType.STRING)
+
     @Column(name = "balance", precision = 19, scale = 2, nullable = false)
     private BigDecimal balance;
+
     @Column(name = "currency", nullable = false)
     private String currency;
-    @Column(name = "status_transfer", nullable = false)
-    private StatusTransfer statusTransfer;
+
     @ManyToOne
     @JoinColumn(name = "id_person")
     @JsonBackReference

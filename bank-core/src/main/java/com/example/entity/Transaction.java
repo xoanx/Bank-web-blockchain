@@ -19,22 +19,32 @@ public class Transaction {
     @Id
     @GeneratedValue(strategy = GenerationType.AUTO)
     private UUID id;
+
+    @Column(nullable = false, unique = true, updatable = false)
+    private String reference;
+
     @ManyToOne
-    @JoinColumn (name = "from_account_id", nullable = false)
+    @JoinColumn(name = "from_account_id", nullable = false)
     private Account fromAccount;
+
     @ManyToOne
     @JoinColumn(name = "to_account_id", nullable = false)
     private Account toAccount;
-    @JoinColumn(name = "amount", nullable = false)
+
+    @Column(name = "amount", nullable = false)
     private Double amount;
-    @Enumerated (EnumType.STRING)
-    @JoinColumn(name = "type", nullable = false)
-    private TransactionType type;
+
     @Enumerated(EnumType.STRING)
-    @JoinColumn(name = "status", nullable = false)
+    @Column(name = "type", nullable = false)
+    private TransactionType type;
+
+    @Enumerated(EnumType.STRING)
+    @Column(name = "status", nullable = false)
     private TransactionStatus status;
-    @JoinColumn(name = "created_at", nullable = false)
+
+    @Column(name = "created_at", nullable = false)
     private LocalDateTime createdAt;
+
     @PrePersist
     protected void onCreate() {
         this.createdAt = LocalDateTime.now();
