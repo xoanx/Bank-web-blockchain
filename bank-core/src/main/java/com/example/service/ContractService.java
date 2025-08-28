@@ -1,20 +1,22 @@
 package com.example.service;
 
 
-import com.example.dto.ContractDto;
+import com.example.dto.detail.AccountDetailResponseDto;
+import com.example.dto.detail.ContractDetailResponseDto;
+import com.example.dto.request.AccountRequestDto;
+import com.example.dto.request.ContractRequestDto;
+import com.example.enums.ContractStatus;
 
 import java.util.List;
 import java.util.UUID;
 
 public interface ContractService {
-    List<ContractDto> getAllContracts ();
-
-    ContractDto getContractById (UUID idContract);
-
-    ContractDto createContract (ContractDto contractDto);
-
-    ContractDto updateContract (UUID idContract, ContractDto contractDto);
-
-    void deleteContract (UUID idContract);
+    ContractDetailResponseDto createAccount(AccountRequestDto accountRequestDto, UUID personId);
+    AccountDetailResponseDto getAccountById (UUID accountId);
+    List<AccountDetailResponseDto> getAllAccounts();
+    AccountDetailResponseDto updateAccount(UUID accountId, AccountRequestDto accountRequestDto);
+    void deleteAccount(UUID accountId);
+    ContractDetailResponseDto updatedContract(UUID contractId, ContractRequestDto contractRequestDto);
+    void changeContractStatus(UUID contractId, ContractStatus contractStatus);
 }
 

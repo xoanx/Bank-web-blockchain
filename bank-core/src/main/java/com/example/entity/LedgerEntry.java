@@ -16,27 +16,22 @@ public class LedgerEntry {
     @Id
     @GeneratedValue(strategy = GenerationType.AUTO)
     private UUID id;
+    @Column(name = "Entry_type", nullable = false)
+    private EntryType entryType;
+    @Column(name = "Amount", nullable = false)
+    private BigDecimal amount;
+    @Column(name = "Balance_after", nullable = false)
+    private BigDecimal balanceAfter;
+    @Column(name = "Created_at", nullable = false)
+    private LocalDateTime createdAt;
 
     @ManyToOne
-    @JoinColumn(name = "transaction_id", nullable = false)
-    private Transaction transaction;
-
-    @ManyToOne
-    @JoinColumn(name = "account_id", nullable = false)
+    @JoinColumn(name = "Account_id", nullable = false)
     private Account account;
 
-    @Enumerated(EnumType.STRING)
-    @Column(name = "entry_type", nullable = false)
-    private EntryType entryType; // DEBIT / CREDIT
-
-    @Column(name = "amount", nullable = false)
-    private BigDecimal amount;
-
-    @Column(name = "balance_after", nullable = false)
-    private BigDecimal balanceAfter;
-
-    @Column(name = "created_at", nullable = false)
-    private LocalDateTime createdAt;
+    @ManyToOne
+    @JoinColumn(name = "Transaction_id", nullable = false)
+    private Transaction transaction;
 
     @PrePersist
     protected void onCreate() {

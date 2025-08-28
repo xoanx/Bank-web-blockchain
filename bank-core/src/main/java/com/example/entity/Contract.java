@@ -18,28 +18,20 @@ import java.util.UUID;
 @Setter
 @Table(name = "Contract")
 public class Contract {
-
     @Id
     @GeneratedValue(strategy = GenerationType.AUTO)
     @Column(name = "ID_Contract")
     private UUID idContract;
-
     @Column(name = "Contract_Address", length = 100, nullable = false)
     private String contractAddress;
-
     @Column(name = "Contract_Name", length = 50, nullable = false)
     private String contractName;
-
     @Column(name = "Message", length = 200)
     private String message;
-
     @Column(name = "Create_At", nullable = false)
     private LocalDateTime createdAt;
-
     @Column(name = "Last_Updated_At")
     private LocalDateTime lastUpdatedAt;
-
-    @Enumerated(EnumType.STRING)
     @Column(name = "Status")
     private ContractStatus status;
 

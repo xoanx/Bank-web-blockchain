@@ -1,67 +1,78 @@
 package com.example.mapper;
 
-import com.example.dto.AccountDto;
-import com.example.dto.ContractDto;
-import com.example.dto.PersonDto;
+import com.example.dto.detail.AccountDetailResponseDto;
+import com.example.dto.detail.PersonDetailResponseDto;
+import com.example.dto.lite.AccountLiteResponseDto;
+import com.example.dto.lite.ContractLiteResponseDto;
+import com.example.dto.lite.PersonLiteResponseDto;
+import com.example.dto.request.PersonRequestDto;
+import com.example.dto.response.AccountResponseDto;
+import com.example.dto.response.ContractResponseDto;
+import com.example.dto.response.PersonResponseDto;
+import com.example.entity.Account;
+import com.example.entity.Contract;
 import com.example.entity.Person;
 
-import java.util.ArrayList;
+import java.time.LocalDateTime;
 import java.util.List;
 import java.util.Optional;
 
 public class PersonMapper {
 
-    public static PersonDto mapToPersonDto(Person person) {
-//        List<AccountDto> accountDtos = person.getAccounts () != null
-//                ? person.getAccounts ().stream ()
-//                    .map (AccountMapper::mapToAccountDto)
-//                    .toList ()
-//                :null;
-//        List<ContractDto> contractDtos = person.getContracts () != null
-//                ? person.getContracts ().stream ()
-//                    .map (ContractMapper::mapToContractDto)
-//                    .toList ()
-//                :null;
-        List<AccountDto> accountDtos = Optional.ofNullable (person.getAccounts())
-                .orElse(List.of ())
-                .stream ()
-                .map(AccountMapper::mapToAccountDto)
-                .toList ();
-        List<ContractDto> contractDtos = Optional.ofNullable (person.getContracts ())
+    //map to Lite
+    public static PersonLiteResponseDto personMapToLite(Person person) {
+        if(person == null){ return null; }
+        return PersonLiteResponseDto.builder()
+                .idPerson (person.getIdPerson ())
+                .firstName (person.getFirstName ())
+                .lastName (person.getLastName ())
+                .email (person.getEmail ())
+                .build ();
+    }
+    //map to detail
+    public static PersonDetailResponseDto personMapToDetail(Person person, Account acounts, Contract contracts) {
+        if(person == null){ return null; }
+        List<AccountLiteResponseDto> accountLiteResponseDtos = Optional.ofNullable (person.getAccounts ())
                 .orElse (List.of ())
                 .stream ()
-                .map (ContractMapper::mapToContractDto)
+                .map(AccountMapper::accountMapToLite)
                 .toList ();
-        return PersonDto.builder()
-                .idPerson(person.getIdPerson())
-                .firstName(person.getFirstName())
-                .lastName(person.getLastName())
-                .birthDate(person.getBirthDate())
-                .email(person.getEmail())
-                .phoneNumber(person.getPhoneNumber())
-                .address(person.getAddress())
-                .taxIdentificationNumber(person.getTaxIdentificationNumber())
-                .createdAt(person.getCreatedAt())
-                .updatedAt(person.getUpdatedAt())
-                .expiredAt(person.getExpiredAt())
-                .accounts (accountDtos)
-                .contracts (contractDtos)
-                .build();
+        List<ContractLiteResponseDto> contractLiteResponseDtos = Optional.ofNullable (person.getContracts ())
+                .orElse (List.of ())
+                .stream ()
+                .map (ContractMapper::contractMapToLite)
+                .toList ();
+        return PersonDetailResponseDto.builder ()
+                .idPerson (person.getIdPerson ())
+                .firstName (person.getFirstName ())
+                .lastName (person.getLastName ())
+                .birthDate (person.getBirthDate ())
+                .email (person.getEmail ())
+                .phoneNumber (person.getPhoneNumber ())
+                .address (person.getAddress ())
+                .taxIdentificationNumber (person.getTaxIdentificationNumber ())
+                .createdAt (person.getCreatedAt ())
+                .updatedAt (person.getUpdatedAt ())
+                .expiredAt (person.getExpiredAt ())
+                .accounts (accountLiteResponseDtos)
+                .contracts (contractLiteResponseDtos)
+                .build ();
     }
-
-    public static Person mapToPerson(PersonDto personDto) {
-        return Person.builder()
-                .idPerson(personDto.getIdPerson())
-                .firstName(personDto.getFirstName())
-                .lastName(personDto.getLastName())
-                .birthDate(personDto.getBirthDate())
-                .email(personDto.getEmail())
-                .phoneNumber(personDto.getPhoneNumber())
-                .address(personDto.getAddress())
-                .taxIdentificationNumber(personDto.getTaxIdentificationNumber())
-                .createdAt(personDto.getCreatedAt())
-                .updatedAt(personDto.getUpdatedAt())
-                .expiredAt(personDto.getExpiredAt())
-                .build();
+    //map to Entity
+    public static Person mapToPerson(PersonRequestDto personRequestDto, List<Account> accounts, List<Contract> contracts) {
+        if(personRequestDto == null){ return null; }
+        return Person.builder ()
+                .firstName (personRequestDto.getFirstName ())
+                .lastName (personRequestDto.getLastName ())
+                .birthDate (personRequestDto.getBirthDate ())
+                .email (personRequestDto.getEmail ())
+                .phoneNumber (personRequestDto.getPhoneNumber ())
+                .address (personRequestDto.getAddress ())
+                .taxIdentificationNumber (personRequestDto.getTaxIdentificationNumber ())
+                .createdAt (LocalDateTime.now ())
+                .updatedAt (LocalDateTime.now ())
+                .accounts (accounts)
+                .contracts (contracts)
+                .build ();
     }
 }

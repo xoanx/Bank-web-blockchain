@@ -1,15 +1,23 @@
 package com.example.service.impl;
 
-import com.example.dto.PersonDto;
+import com.example.dto.detail.PersonDetailResponseDto;
+import com.example.dto.lite.ContractLiteResponseDto;
+import com.example.dto.lite.PersonLiteResponseDto;
+import com.example.dto.request.PersonRequestDto;
+import com.example.entity.Account;
+import com.example.entity.Contract;
 import com.example.entity.Person;
+import com.example.mapper.ContractMapper;
 import com.example.mapper.PersonMapper;
 import com.example.repository.PersonRepository;
 import com.example.service.PersonService;
 import lombok.RequiredArgsConstructor;
-import lombok.extern.slf4j.Slf4j;
+import org.springframework.expression.ExpressionException;
 import org.springframework.stereotype.Service;
 
+import java.time.LocalDateTime;
 import java.util.List;
+import java.util.Optional;
 import java.util.UUID;
 import java.util.stream.Collectors;
 
@@ -20,40 +28,71 @@ public class PersonServiceImpl implements PersonService {
     private final PersonRepository personRepository;
 
     @Override
-    public List<PersonDto> getAllPersons() {
-        return personRepository.findAll().stream()
-                .map(PersonMapper::mapToPersonDto)
-                .collect(Collectors.toList());
+    public PersonDetailResponseDto createPerson(PersonRequestDto personRequestDto) {
+        Person person = PersonMapper.mapToPerson (personRequestDto,List.of (),List.of ());
+        person.setCreatedAt (LocalDateTime.now ());
+        person.setUpdatedAt (LocalDateTime.now ());
+        Person savedPerson = personRepository.save(person);
+        return PersonMapper.personMapToDetail (savedPerson, null,null);
     }
-
     @Override
-    public PersonDto getPersonById(UUID idPerson) {
-        Person person = personRepository.findById(idPerson)
-                .orElseThrow(() -> new RuntimeException("Person not found"));
-        return PersonMapper.mapToPersonDto(person);
+    public PersonDetailResponseDto getPersonById(UUID personId) {
+        Person person = personRepository.findById(personId)
+                .orElseThrow (()-> new ExpressionException ("Person not found"));
+        return PersonMapper.personMapToDetail (person, null,null);
     }
-
     @Override
-    public PersonDto updatePerson(UUID idPerson, PersonDto personDto) {
-        Person existingPerson = personRepository.findById(idPerson)
-                .orElseThrow(() -> new RuntimeException("Person not found"));
-        Person updatedPerson = PersonMapper.mapToPerson(personDto);
-        updatedPerson.setIdPerson(existingPerson.getIdPerson());
-        updatedPerson.setCreatedAt(existingPerson.getCreatedAt());
-        return PersonMapper.mapToPersonDto(personRepository.save(updatedPerson));
+    public List<PersonLiteResponseDto> getAllPersons(){
+        return personRepository.findAll ()
+                .stream ()
+                .map (PersonMapper::personMapToLite)
+                .toList ();
     }
-
     @Override
-    public void deletePerson(UUID idPerson) {
-        if (!personRepository.existsById(idPerson)) {
-            throw new RuntimeException("Person not found");
+    public PersonDetailResponseDto updatedPerson(UUID personId, PersonRequestDto personRequestDto){
+        Person person = personRepository.findById (personId)
+                .orElseThrow (()-> new ExpressionException ("Person not found"));
+        //field request
+        person.setFirstName (personRequestDto.getFirstName ());
+        person.setLastName (personRequestDto.getLastName ());
+        person.setEmail (personRequestDto.getEmail ());
+        person.setBirthDate (personRequestDto.getBirthDate ());
+        person.setPhoneNumber (personRequestDto.getPhoneNumber ());
+        person.setAddress (personRequestDto.getAddress ());
+        person.setTaxIdentificationNumber (personRequestDto.getTaxIdentificationNumber ());
+        person.setUpdatedAt (LocalDateTime.now ());
+
+        Person savedPerson = personRepository.save(person);
+        return PersonMapper.personMapToDetail (savedPerson, null,null);
+    }
+    @Override
+    public void deletePerson(UUID personId) {
+        if (!personRepository.existsById(personId)) {
+            throw new RuntimeException ("Person not found");
         }
-        personRepository.deleteById(idPerson);
+        personRepository.deleteById(personId);
     }
-
     @Override
-    public PersonDto createPerson(PersonDto personDto) {
-        Person person = PersonMapper.mapToPerson(personDto);
-        return PersonMapper.mapToPersonDto(personRepository.save(person));
+    public List<PersonDetailResponseDto> searchPerson(PersonRequestDto personRequestDto) {
+        List<Person> persons = personRepository.findAll ()
+                .stream ()
+                .filter (p -> (personRequestDto.getFirstName () == null || p.getFirstName ().equalsIgnoreCase (personRequestDto.getFirstName ())))
+                .filter (p -> (personRequestDto.getLastName () == null || p.getLastName ().equalsIgnoreCase (personRequestDto.getLastName ())))
+                .filter (p -> (personRequestDto.getEmail () == null || p.getEmail ().equalsIgnoreCase (personRequestDto.getEmail ())))
+                .filter (p -> (personRequestDto.getPhoneNumber () == null || p.getPhoneNumber ().equalsIgnoreCase (personRequestDto.getPhoneNumber ())))
+                .filter (p -> (personRequestDto.getTaxIdentificationNumber () == null || p.getTaxIdentificationNumber ().equalsIgnoreCase (personRequestDto.getTaxIdentificationNumber ())))
+                .toList ();
+        return persons.stream ()
+                .map (p -> PersonMapper.personMapToDetail (p, null,null))
+                .toList ();
+    }
+    public List<ContractLiteResponseDto> getContractsOfPerson(UUID personId) {
+        Person person = personRepository.findById (personId)
+                .orElseThrow (()-> new RuntimeException ("Person not found"));
+        return Optional.ofNullable (person.getContracts ())
+                .orElse (List.of ())
+                .stream ()
+                .map (ContractMapper::contractMapToLite)
+                .toList ();
     }
 }

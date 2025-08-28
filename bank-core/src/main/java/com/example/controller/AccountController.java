@@ -1,6 +1,5 @@
 package com.example.controller;
 
-import com.example.dto.AccountDto;
 import com.example.service.AccountService;
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.ResponseEntity;

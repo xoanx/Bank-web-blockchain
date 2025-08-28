@@ -1,14 +1,19 @@
 package com.example.service;
 
-import com.example.dto.PersonDto;
+import com.example.dto.detail.PersonDetailResponseDto;
+import com.example.dto.lite.ContractLiteResponseDto;
+import com.example.dto.lite.PersonLiteResponseDto;
+import com.example.dto.request.PersonRequestDto;
 
 import java.util.List;
 import java.util.UUID;
 
 public interface PersonService {
-        PersonDto createPerson(PersonDto personDto);
-        List<PersonDto> getAllPersons();
-        PersonDto getPersonById(UUID idPerson);
-        PersonDto updatePerson(UUID idPerson, PersonDto personDto);
-        void deletePerson(UUID idPerson);
+        PersonDetailResponseDto createPerson(PersonRequestDto personRequestDto);
+        PersonDetailResponseDto getPersonById( UUID personId);
+        List<PersonLiteResponseDto> getAllPersons();
+        PersonDetailResponseDto updatedPerson(UUID personId, PersonRequestDto personRequestDto);
+        void deletePerson(UUID personId);
+        List<PersonDetailResponseDto> searchPerson(PersonRequestDto personRequestDto);
+        List<ContractLiteResponseDto> getContractsOfPerson(UUID personId);
 }
