@@ -6,17 +6,18 @@ import com.example.dto.detail.ContractDetailResponseDto;
 import com.example.dto.request.AccountRequestDto;
 import com.example.dto.request.ContractRequestDto;
 import com.example.enums.ContractStatus;
+import com.example.specidication.ContractSpecification;
 
 import java.util.List;
 import java.util.UUID;
 
 public interface ContractService {
-    ContractDetailResponseDto createAccount(AccountRequestDto accountRequestDto, UUID personId);
-    AccountDetailResponseDto getAccountById (UUID accountId);
-    List<AccountDetailResponseDto> getAllAccounts();
-    AccountDetailResponseDto updateAccount(UUID accountId, AccountRequestDto accountRequestDto);
-    void deleteAccount(UUID accountId);
+    ContractDetailResponseDto createContract(ContractRequestDto contractRequestDto, UUID personId);
+    ContractDetailResponseDto getContractById (UUID contractId);
+    List<ContractDetailResponseDto> getAllContracts();
     ContractDetailResponseDto updatedContract(UUID contractId, ContractRequestDto contractRequestDto);
+    void deleteContract(UUID contractId);
     void changeContractStatus(UUID contractId, ContractStatus contractStatus);
+    List<ContractDetailResponseDto> searchContract(ContractRequestDto contractRequestDto);
 }
 

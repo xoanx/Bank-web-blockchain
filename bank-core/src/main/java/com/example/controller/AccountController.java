@@ -1,5 +1,7 @@
 package com.example.controller;
 
+import com.example.dto.detail.AccountDetailResponseDto;
+import com.example.dto.request.AccountRequestDto;
 import com.example.service.AccountService;
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.ResponseEntity;
@@ -15,29 +17,40 @@ public class AccountController {
 
     private final AccountService accountService;
 
-    @GetMapping("/get-all-account/")
-    public ResponseEntity<List<AccountDto>> getAllAccounts() {
+    @PostMapping("/person/{personId}")
+    public ResponseEntity<AccountDetailResponseDto> createAccount(
+            @PathVariable UUID personId,
+            @RequestBody AccountRequestDto accountRequestDto ){
+        return ResponseEntity.ok (accountService.createAccount (accountRequestDto, personId));
+    }
+
+    @GetMapping
+    public ResponseEntity<List<AccountDetailResponseDto>> getAllAccounts() {
         return ResponseEntity.ok(accountService.getAllAccounts());
     }
 
-    @GetMapping("/get-accpunt/{id}")
-    public ResponseEntity<AccountDto> getAccountById(@PathVariable UUID id) {
-        return ResponseEntity.ok(accountService.getAccountById(id));
+    @PostMapping("/search")
+    public ResponseEntity<List<AccountDetailResponseDto>> searchAccounts(
+            @RequestBody AccountRequestDto accountRequestDto) {
+        return ResponseEntity.ok (accountService.searchAccount (accountRequestDto));
     }
 
-    @PostMapping("/create-new-account/")
-    public ResponseEntity<AccountDto> createAccount(@RequestBody AccountDto dto) {
-        return ResponseEntity.ok(accountService.createAccount(dto));
+    @PutMapping("/{accountId}")
+    public ResponseEntity<AccountDetailResponseDto> updateAccount(
+            @PathVariable UUID accountId,
+            @RequestBody AccountRequestDto accountRequestDto){
+        return ResponseEntity.ok (accountService.updateAccount (accountId, accountRequestDto));
     }
 
-    @PutMapping("/update-account/{id}")
-    public ResponseEntity<AccountDto> updateAccount(@PathVariable UUID id, @RequestBody AccountDto dto) {
-        return ResponseEntity.ok(accountService.updateAccount(id, dto));
-    }
-
-    @DeleteMapping("/delete-user/{id}")
+    @DeleteMapping("/{accountId")
     public ResponseEntity<Void> deleteAccount(@PathVariable UUID id) {
         accountService.deleteAccount(id);
+        return ResponseEntity.noContent().build();
+    }
+
+    @PatchMapping("/{accountId}/active")
+    public ResponseEntity<Void> activateAccount(@PathVariable UUID accountId) {
+        accountService.activateAccount(accountId);
         return ResponseEntity.noContent().build();
     }
 }

@@ -1,5 +1,7 @@
 package com.example.controller;
 
+import com.example.dto.detail.ContractDetailResponseDto;
+import com.example.dto.request.ContractRequestDto;
 import com.example.service.ContractService;
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.ResponseEntity;
@@ -9,35 +11,52 @@ import java.util.List;
 import java.util.UUID;
 
 @RestController
-@RequestMapping("/api/contracts")
+@RequestMapping("/api/contract")
 @RequiredArgsConstructor
 public class ContractController {
 
     private final ContractService contractService;
 
+    @PostMapping("/personId/{personId}")
+    public ResponseEntity<ContractDetailResponseDto> createContract(
+            @PathVariable UUID personId,
+            @RequestBody ContractRequestDto contractRequestDto) {
+        return ResponseEntity.ok (contractService.createContract (contractRequestDto, personId));
+    }
+
+    @GetMapping("/{contractId}")
+    public ResponseEntity<ContractDetailResponseDto> getContractById(UUID contractId) {
+        return ResponseEntity.ok (contractService.getContractById (contractId));
+    }
+
     @GetMapping
-    public ResponseEntity<List<ContractDto>> getAllContracts() {
-        return ResponseEntity.ok(contractService.getAllContracts());
+    public ResponseEntity<List<ContractDetailResponseDto>> getAllContracts() {
+        return ResponseEntity.ok (contractService.getAllContracts());
     }
 
-    @GetMapping("/{id}")
-    public ResponseEntity<ContractDto> getContractById(@PathVariable UUID id) {
-        return ResponseEntity.ok(contractService.getContractById(id));
+    @PutMapping("/{contractId}")
+    public ResponseEntity<ContractDetailResponseDto> updateContract(
+            @PathVariable UUID contractId,
+            @RequestBody ContractRequestDto contractRequestDto){
+        return ResponseEntity.ok (contractService.updatedContract (contractId,contractRequestDto));
     }
 
-    @PostMapping
-    public ResponseEntity<ContractDto> createContract(@RequestBody ContractDto dto) {
-        return ResponseEntity.ok(contractService.createContract(dto));
+    @DeleteMapping("/{idContract}")
+    public ResponseEntity<ContractDetailResponseDto> deleteContract(@PathVariable UUID idContract) {
+        contractService.deleteContract (idContract);
+        return ResponseEntity.noContent ().build ();
     }
 
-    @PutMapping("/{id}")
-    public ResponseEntity<ContractDto> updateContract(@PathVariable UUID id, @RequestBody ContractDto dto) {
-        return ResponseEntity.ok(contractService.updateContract(id, dto));
+    @PatchMapping("/{contractId}")
+    public ResponseEntity<ContractDetailResponseDto> changeContractStatus(
+            @PathVariable UUID contractId,
+            @RequestBody ContractRequestDto contractRequestDto){
+        contractService.changeContractStatus (contractId,contractRequestDto.getStatus ());
+        return ResponseEntity.noContent ().build ();
     }
 
-    @DeleteMapping("/{id}")
-    public ResponseEntity<Void> deleteContract(@PathVariable UUID id) {
-        contractService.deleteContract(id);
-        return ResponseEntity.noContent().build();
+    @PostMapping("/search")
+    public ResponseEntity<List<ContractDetailResponseDto>> searchContracts(@RequestBody ContractRequestDto contractRequestDto){
+        return ResponseEntity.ok (contractService.searchContract (contractRequestDto));
     }
 }

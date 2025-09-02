@@ -19,4 +19,5 @@ public class ContractRequestDto {
     private ContractStatus status;
     private UUID personId;
     private UUID idContract;
+    private UUID accountId;
 }

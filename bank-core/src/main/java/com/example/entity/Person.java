@@ -49,4 +49,7 @@ public class Person {
     @OneToMany(mappedBy = "person", cascade = CascadeType.ALL)
     @JsonManagedReference
     private List<Contract> contracts;
+    public String getFullName(){
+        return this.firstName + " " + this.lastName;
+    }
 }

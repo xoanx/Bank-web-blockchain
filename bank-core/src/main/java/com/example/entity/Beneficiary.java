@@ -16,7 +16,7 @@ public class Beneficiary {
     @Column(name = "beneficiary_name", nullable = false)
     private String beneficiaryName;
     @Column(name = "beneficiary_account_number", nullable = false)
-    private String beneficiaryAccountNumber;
+    private String beneficiaryAccountNumber;    //toAccountNumber
     @Column(name = "bank_code")
     private String bankCode;
     @Column(name = "alias_name")

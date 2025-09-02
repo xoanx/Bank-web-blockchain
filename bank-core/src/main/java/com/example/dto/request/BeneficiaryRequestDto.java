@@ -13,8 +13,9 @@ import java.util.UUID;
 @Builder
 public class BeneficiaryRequestDto {
     private UUID ownerAccountId;
-    private String ownerAccountName;
+//    private String ownerAccountName;
     private String beneficiaryAccountNumber;
     private String bankCode;
     private String aliasName;
+    private String beneficiaryName;
 }

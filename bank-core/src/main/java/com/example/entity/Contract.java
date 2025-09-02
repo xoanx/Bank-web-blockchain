@@ -28,10 +28,10 @@ public class Contract {
     private String contractName;
     @Column(name = "Message", length = 200)
     private String message;
-    @Column(name = "Create_At", nullable = false)
+    @Column(name = "Create_At", nullable = false, updatable = false)
     private LocalDateTime createdAt;
     @Column(name = "Last_Updated_At")
-    private LocalDateTime lastUpdatedAt;
+    private LocalDateTime updateAt;
     @Column(name = "Status")
     private ContractStatus status;
 
@@ -39,4 +39,17 @@ public class Contract {
     @JoinColumn(name = "id_person")
     @JsonBackReference
     private Person person;
+
+    @ManyToOne
+    @JoinColumn(name = "updated_by")
+    private Account updatedBy;
+
+    @PrePersist
+    protected void onCreate() {
+        this.createdAt = LocalDateTime.now();
+    }
+    @PreUpdate
+    private void onUpdate(){
+        this.updateAt = LocalDateTime.now();
+    }
 }

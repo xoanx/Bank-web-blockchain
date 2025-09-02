@@ -3,6 +3,7 @@ package com.example.repository;
 import com.example.entity.LedgerEntry;
 import com.example.enums.EntryType;
 import org.springframework.data.jpa.repository.JpaRepository;
+import org.springframework.data.jpa.repository.JpaSpecificationExecutor;
 import org.springframework.data.jpa.repository.Query;
 import org.springframework.data.repository.query.Param;
 import org.springframework.stereotype.Component;
@@ -14,7 +15,7 @@ import java.util.UUID;
 
 @Component
 @Repository
-public interface LedgerEntryRepository extends JpaRepository<LedgerEntry, UUID> {
+public interface LedgerEntryRepository extends JpaRepository<LedgerEntry, UUID>, JpaSpecificationExecutor<LedgerEntry> {
     List<LedgerEntry> findByTransactionId(UUID transactionId);
 
     List<LedgerEntry> findByAccount_IdAccount(UUID accountId);

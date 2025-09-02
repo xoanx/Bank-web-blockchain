@@ -1,9 +1,12 @@
 package com.example.repository;
 
+import com.example.dto.detail.TransactionDetailResponseDto;
 import com.example.entity.Transaction;
 import com.example.enums.TransactionStatus;
 import com.example.enums.TransactionType;
+import com.example.specidication.TransactionSpecification;
 import org.springframework.data.jpa.repository.JpaRepository;
+import org.springframework.data.jpa.repository.JpaSpecificationExecutor;
 import org.springframework.data.jpa.repository.Query;
 import org.springframework.data.repository.query.Param;
 import org.springframework.stereotype.Component;
@@ -17,7 +20,7 @@ import java.util.UUID;
 
 @Repository
 @Component
-public interface TransactionRepository extends JpaRepository<Transaction, UUID> {
+public interface TransactionRepository extends JpaRepository<Transaction, UUID>, JpaSpecificationExecutor<Transaction> {
     Optional<Transaction> findByReference(String reference);
 
     List<Transaction> findByFromAccountId(UUID fromAccountId);
@@ -31,5 +34,5 @@ public interface TransactionRepository extends JpaRepository<Transaction, UUID> 
     @Query ("SELECT t FROM Transaction t WHERE t.createdAt BETWEEN :start AND :end")
     List<Transaction> findTransactionsWithinPeriod(@Param ("start") LocalDateTime start,
                                                    @Param("end") LocalDateTime end);
-
+    List<TransactionDetailResponseDto> searchTransaction(TransactionSpecification transactionSpecification);
 }

@@ -7,8 +7,9 @@ import java.util.List;
 import java.util.UUID;
 
 public interface BeneficiaryService {
-    BeneficiaryDetailResponseDto addBeneficiary(UUID ownerAccountId);
     List<BeneficiaryDetailResponseDto> getAllBeneficiaries();
     BeneficiaryDetailResponseDto updatedBeneficiary(UUID beneficiaryId, BeneficiaryRequestDto beneficiaryRequestDto);
     void deleteBeneficiary(UUID beneficiaryId);
+    BeneficiaryDetailResponseDto getBeneficiaryById(UUID beneficiaryId);
+    BeneficiaryDetailResponseDto addBeneficiary(BeneficiaryRequestDto beneficiaryRequestDto);
 }

@@ -29,8 +29,10 @@ public class ContractMapper {
                 .message(contract.getMessage())
                 .status(contract.getStatus())
                 .createdAt(contract.getCreatedAt())
-                .updatedAt(contract.getLastUpdatedAt())
-                .personDetail (PersonMapper.personMapToLite (contract.getPerson ()))
+                .updatedAt(contract.getUpdateAt ())
+                .personDetail (contract.getPerson () != null
+                        ? PersonMapper.personMapToLite (contract.getPerson ())
+                        : null)
                 .build();
     }
     //map to Entity
@@ -41,7 +43,7 @@ public class ContractMapper {
                 .contractName (contractRequestDto.getContractName ())
                 .message (contractRequestDto.getMessage ())
                 .createdAt (LocalDateTime.now ())
-                .lastUpdatedAt (null)
+                .updateAt (null)
                 .status (contractRequestDto.getStatus () != null
                         ? contractRequestDto.getStatus () : ContractStatus.DRAFT)
                 .person (person)

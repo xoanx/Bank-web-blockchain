@@ -9,7 +9,7 @@ import java.util.UUID;
 
 public interface AccountService {
     AccountDetailResponseDto createAccount(AccountRequestDto accountRequestDto, UUID personId);
-    AccountDetailResponseDto deposit(BigDecimal amount, UUID personId);
+    AccountDetailResponseDto deposit(BigDecimal amount, UUID accountId);
     List<AccountDetailResponseDto> searchAccount (AccountRequestDto accountRequestDto);
     List<AccountDetailResponseDto> getAllAccounts();
     AccountDetailResponseDto updateAccount(UUID accountId, AccountRequestDto accountRequestDto);
