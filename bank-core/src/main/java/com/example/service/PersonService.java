@@ -16,4 +16,5 @@ public interface PersonService {
         void deletePerson(UUID personId);
         List<PersonDetailResponseDto> searchPerson(PersonRequestDto personRequestDto);
         List<ContractLiteResponseDto> getContractsOfPerson(UUID personId);
+        PersonDetailResponseDto findUserByEmail( String username);
 }

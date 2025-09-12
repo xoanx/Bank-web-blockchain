@@ -79,8 +79,6 @@ public class AccountServiceImpl implements AccountService {
                         || a.getAccountNumber ().equalsIgnoreCase (accountRequestDto.getAccountNumber ())))
                 .filter (a -> (accountRequestDto.getStatus () == null
                         || a.getAccountStatus ().equals(accountRequestDto.getStatus ())))
-                .filter (a -> (accountRequestDto.getRole () == null
-                        || a.getRole ().equals (accountRequestDto.getRole ())))
                 .toList ();
         return accounts.stream ()
                 .map (AccountMapper::accountMapToDetail)
@@ -100,7 +98,6 @@ public class AccountServiceImpl implements AccountService {
         //field request
         account.setUsername (accountRequestDto.getUsername());
         account.setPasswordHash (accountRequestDto.getPassword ());
-        account.setRole (accountRequestDto.getRole ());
         Account savedAccount = accountRepository.save(account);
         return AccountMapper.accountMapToDetail(savedAccount);
     }

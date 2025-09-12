@@ -17,7 +17,6 @@ public class AccountRequestDto {
     private String accountNumber;
     private String username;
     private String password;
-    private UserRole role;
     private String currency;
     private BigDecimal balance;
     private AccountStatus status;

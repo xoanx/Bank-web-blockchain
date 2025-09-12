@@ -6,6 +6,7 @@ import com.example.entity.Transaction;
 import com.example.service.TransactionService;
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.ResponseEntity;
+import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.web.bind.annotation.*;
 
 import java.math.BigDecimal;
@@ -13,49 +14,56 @@ import java.util.List;
 import java.util.UUID;
 
 @RestController
-@RequestMapping ("/api/transaction")
+@RequestMapping ("/api/transactions")
 @RequiredArgsConstructor
 public class TransactionController {
 
     private final TransactionService transactionService;
 
-    @PostMapping("/transfer")
+    @PostMapping("/{accountId}/transfer")
+    @PreAuthorize ("hasRole('ADMIN') or hasRole('CLIENT')")
     public ResponseEntity<TransactionDetailResponseDto> transfer(
             @RequestBody TransactionRequestDto transactionRequestDto,
             @RequestParam(defaultValue = "false") boolean saveBeneficiary) {
         return ResponseEntity.ok (transactionService.transfer(transactionRequestDto, saveBeneficiary));
     }
 
-    @PostMapping("/deposit")
+    @PostMapping("/{accountId}/deposit")
+    @PreAuthorize ("hasRole('ADMIN') or hasRole('CLIENT')")
     public ResponseEntity<TransactionDetailResponseDto> deposit(
             @PathVariable UUID accountId,
-            @PathVariable BigDecimal amount ){
+            @RequestParam BigDecimal amount ){
         return ResponseEntity.ok (transactionService.deposit(accountId, amount));
     }
 
-    @PostMapping("/withdraw")
+    @PostMapping("/{accountId}/withdraw")
+    @PreAuthorize ("hasRole('ADMIN') or hasRole('CLIENT')")
     public ResponseEntity<TransactionDetailResponseDto> withdraw(
             @PathVariable UUID accountId,
-            @PathVariable BigDecimal amount ){
+            @RequestParam BigDecimal amount ){
         return ResponseEntity.ok (transactionService.withdraw(accountId, amount));
     }
 
     @GetMapping("/{transactionId}")
+    @PreAuthorize ("hasRole('ADMIN') or hasRole('BANK') or hasRole('ADMIN') or hasRole('CLIENT')")
     public ResponseEntity<TransactionDetailResponseDto> getTransactionById(@PathVariable UUID transactionId){
         return ResponseEntity.ok (transactionService.getTransactionById (transactionId));
     }
 
     @GetMapping
+    @PreAuthorize ("hasRole('ADMIN') or hasRole('BANK') or hasRole('ADMIN')")
     public ResponseEntity<List<TransactionDetailResponseDto>> getAllTransactions(){
         return ResponseEntity.ok (transactionService.getAllTransactions());
     }
 
     @GetMapping("/{accountId}")
+    @PreAuthorize ("hasRole('ADMIN') or hasRole('BANK') or hasRole('ADMIN') or hasRole('CLIENT')")
     public ResponseEntity<List<TransactionDetailResponseDto>> getTransactionByAccountId(@PathVariable UUID accountId){
         return ResponseEntity.ok (transactionService.getTransactionsByAccountId (accountId));
     }
 
     @PostMapping("/search")
+    @PreAuthorize ("hasRole('ADMIN') or hasRole('BANK') or hasRole('ADMIN') or hasRole('CLIENT')")
     public ResponseEntity<List<TransactionDetailResponseDto>> searchTransactions(TransactionRequestDto transactionRequestDto){
         return ResponseEntity.ok (transactionService.searchTransaction (transactionRequestDto));
     }

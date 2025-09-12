@@ -33,16 +33,18 @@ public class Account {
     @Enumerated(EnumType.STRING)
     @Column(name = "Status", nullable = false)
     private AccountStatus accountStatus;
-    @Enumerated(EnumType.STRING)
-    @Column(name = "User_Role", nullable = false)
-    private UserRole role;
+    @Column(name = "tokenVersion", nullable = false)
+    private Integer tokenVersion = 0;
+//    @Enumerated(EnumType.STRING)
+//    @Column(name = "User_Role", nullable = false)
+//    private UserRole role;
     @Column(name = "balance", precision = 19, scale = 2, nullable = false)
     private BigDecimal balance;
     @Column(name = "currency", nullable = false)
     private String currency;
 
     @ManyToOne
-    @JoinColumn(name = "id_person")
+    @JoinColumn(name = "owner_person", nullable = false)
     @JsonBackReference
     private Person person;
 }

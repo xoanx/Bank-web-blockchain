@@ -66,6 +66,7 @@ public class PersonMapper {
                 .phoneNumber (personRequestDto.getPhoneNumber ())
                 .address (personRequestDto.getAddress ())
                 .taxIdentificationNumber (personRequestDto.getTaxIdentificationNumber ())
+                .role (personRequestDto.getRole ())
                 .createdAt (LocalDateTime.now ())
                 .updatedAt (LocalDateTime.now ())
                 .accounts (accounts)

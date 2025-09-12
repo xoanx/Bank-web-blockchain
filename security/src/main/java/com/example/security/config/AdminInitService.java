@@ -1,6 +1,7 @@
 package com.example.security.config;
 
 import com.example.entity.Account;
+import com.example.entity.Person;
 import com.example.enums.AccountStatus;
 import com.example.enums.UserRole;
 import com.example.repository.AccountRepository;
@@ -27,16 +28,13 @@ public class AdminInitService {
     private String adminPassword;
     private final PasswordEncoder passwordEncoder;
 
-
     public String createAdminIfNotExists(String providedKey) {
         if (!masterKey.equals(providedKey)) {
             return "Master key invalid!";
         }
-
         if (accountRepository.findByUsername(adminUsername).isPresent()) {
             return "Admin already exists!";
         }
-
         Account admin = Account.builder()
                 .accountNumber("ADMIN-0001")
                 .username(adminUsername)
@@ -44,9 +42,8 @@ public class AdminInitService {
                 .logInAt(LocalDateTime.now())
                 .logOutAt(LocalDateTime.now())
                 .accountStatus(AccountStatus.ACTIVE)
-                .role(UserRole.ADMIN)
+                .person (Person.builder().role(UserRole.ADMIN).build())
                 .build();
-
         accountRepository.save(admin);
         return "Admin has been created successfully!";
     }

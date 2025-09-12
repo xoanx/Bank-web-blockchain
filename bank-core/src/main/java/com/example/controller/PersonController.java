@@ -8,36 +8,43 @@ import com.example.entity.Person;
 import com.example.service.PersonService;
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.ResponseEntity;
+import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
 import java.util.UUID;
 
+import static org.springframework.security.authorization.AuthorityAuthorizationManager.hasAnyRole;
+
 @RestController
-@RequestMapping("/api/person")
+@RequestMapping("/api/persons")
 @RequiredArgsConstructor
 public class PersonController {
 
     private final PersonService personService;
 
     @PostMapping("/create-person")
+    @PreAuthorize ("hasRole('ADMIN')")
     public ResponseEntity<PersonDetailResponseDto> createPerson(
             @RequestBody PersonRequestDto personRequestDto) {
         return ResponseEntity.ok(personService.createPerson(personRequestDto));
     }
 
     @GetMapping("/{personId}")
+    @PreAuthorize ("hasRole('BANK') or hasRole('ADMIN') or hasRole('STAFF')")
     public ResponseEntity<PersonDetailResponseDto> getPerson(
             @PathVariable UUID personId){
         return ResponseEntity.ok(personService.getPersonById(personId));
     }
 
-    @GetMapping
+    @GetMapping()
+    @PreAuthorize ("hasRole('BANK') or hasRole('ADMIN') or hasRole('STAFF')")
     public ResponseEntity<List<PersonLiteResponseDto>> getAllPersons() {
         return ResponseEntity.ok(personService.getAllPersons());
     }
 
     @PutMapping("/{personId}")
+    @PreAuthorize ("hasRole('ADMIN')")
     public ResponseEntity<PersonDetailResponseDto> updatePerson(
             @PathVariable UUID personId,
             @RequestBody PersonRequestDto personRequestDto) {
@@ -45,18 +52,27 @@ public class PersonController {
     }
 
     @DeleteMapping("/{personId}")
+    @PreAuthorize ("hasRole('ADMIN')")
     public ResponseEntity<Void> deletePerson(@PathVariable UUID personId) {
         personService.deletePerson(personId);
         return ResponseEntity.noContent().build();
     }
 
     @PostMapping("/search")
+    @PreAuthorize ("hasRole('BANK') or hasRole('ADMIN') or hasRole('STAFF')")
     public ResponseEntity<List<PersonDetailResponseDto>> searchPerson(@RequestBody PersonRequestDto personRequestDto) {
         return ResponseEntity.ok(personService.searchPerson(personRequestDto));
     }
 
     @GetMapping("/{personId}/contracts")
+    @PreAuthorize ("hasRole('BANK') or hasRole('ADMIN') or hasRole('STAFF')")
     public ResponseEntity<List<ContractLiteResponseDto>> getContractsOfPerson(@PathVariable UUID personId) {
         return ResponseEntity.ok(personService.getContractsOfPerson(personId));
+    }
+
+    @GetMapping("/{username}")
+    @PreAuthorize ("hasAnyRole('ADMIN','BANK','STAFF')")
+    public ResponseEntity<PersonDetailResponseDto> findUserByEmail  ( @PathVariable String username){
+        return ResponseEntity.ok(personService.findUserByEmail(username));
     }
 }

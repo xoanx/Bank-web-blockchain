@@ -17,7 +17,7 @@ public class CustomerDetail implements UserDetails{
     @Override
     public Collection<? extends GrantedAuthority> getAuthorities() {
         return Collections.singletonList(
-                new SimpleGrantedAuthority ("ROLE:"+account.getRole().name())
+                new SimpleGrantedAuthority ("ROLE_"+account.getPerson ().getRole ().name())
         );
     }
 

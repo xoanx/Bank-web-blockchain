@@ -3,6 +3,7 @@ package com.example.service.impl;
 import com.example.dto.detail.PersonDetailResponseDto;
 import com.example.dto.lite.ContractLiteResponseDto;
 import com.example.dto.lite.PersonLiteResponseDto;
+import com.example.dto.request.ContractRequestDto;
 import com.example.dto.request.PersonRequestDto;
 import com.example.entity.Account;
 import com.example.entity.Contract;
@@ -61,7 +62,7 @@ public class PersonServiceImpl implements PersonService {
         person.setAddress (personRequestDto.getAddress ());
         person.setTaxIdentificationNumber (personRequestDto.getTaxIdentificationNumber ());
         person.setUpdatedAt (LocalDateTime.now ());
-
+        person.setRole (personRequestDto.getRole ());
         Person savedPerson = personRepository.save(person);
         return PersonMapper.personMapToDetail (savedPerson, null,null);
     }
@@ -86,6 +87,7 @@ public class PersonServiceImpl implements PersonService {
                 .map (p -> PersonMapper.personMapToDetail (p, null,null))
                 .toList ();
     }
+    @Override
     public List<ContractLiteResponseDto> getContractsOfPerson(UUID personId) {
         Person person = personRepository.findById (personId)
                 .orElseThrow (()-> new RuntimeException ("Person not found"));
@@ -94,5 +96,11 @@ public class PersonServiceImpl implements PersonService {
                 .stream ()
                 .map (ContractMapper::contractMapToLite)
                 .toList ();
+    }
+    @Override
+    public PersonDetailResponseDto findUserByEmail(String username) {
+        Person person = personRepository.findByEmail (username)
+                .orElseThrow (()-> new ExpressionException ("Person not found"));
+        return PersonMapper.personMapToDetail (person, null,null);
     }
 }

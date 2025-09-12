@@ -21,4 +21,6 @@ public interface PersonRepository extends JpaRepository<Person, UUID> {
     Optional<Person> findByTaxIdentificationNumber(String taxIdNumber);
 
     List<Person> findByLastName(String lastName);
+
+    Optional<Person> findByEmailOrPhoneNumber(String email, String phoneNumber);
 }

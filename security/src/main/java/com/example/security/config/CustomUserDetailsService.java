@@ -16,14 +16,14 @@ public class CustomUserDetailsService implements UserDetailsService {
     private final AccountRepository accountRepository;
 
     @Autowired
-    public CustomUserDetailsService(AccountRepository accountRepository) {
+    public CustomUserDetailsService (AccountRepository accountRepository) {
         this.accountRepository = accountRepository;
     }
 
     @Override
-    public UserDetails loadUserByUsername(String username) throws UsernameNotFoundException {
-        Account account = accountRepository.findByUsername(username)
-                .orElseThrow(() -> new UsernameNotFoundException("Username not found: " + username));
+    public UserDetails loadUserByUsername (String username) throws UsernameNotFoundException {
+        Account account = accountRepository.findByUsername (username)
+                .orElseThrow (() -> new UsernameNotFoundException ("Username not found: " + username));
         return new CustomerDetail (account);
     }
 }

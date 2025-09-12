@@ -17,7 +17,6 @@ public class AccountMapper {
                 .balance (account.getBalance ())
                 .currency (account.getCurrency ())
                 .accountStatus (account.getAccountStatus ())
-                .role (account.getRole ())
                 .logInAt (account.getLogInAt ())
                 .logOutAt (account.getLogOutAt ())
                 .person (PersonMapper.personMapToLite (account.getPerson ()))
@@ -42,7 +41,6 @@ public class AccountMapper {
                 .username (accountRequestDto.getUsername())
                 .balance (accountRequestDto.getBalance ())
                 .currency (accountRequestDto.getCurrency ())
-                .role (accountRequestDto.getRole ())
                 .accountStatus (accountRequestDto.getStatus ())
                 .person (person)
                 .build();

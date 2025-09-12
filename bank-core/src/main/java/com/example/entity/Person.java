@@ -1,5 +1,6 @@
 package com.example.entity;
 
+import com.example.enums.UserRole;
 import com.fasterxml.jackson.annotation.JsonManagedReference;
 import lombok.*;
 import javax.persistence.*;
@@ -41,6 +42,9 @@ public class Person {
     private LocalDateTime updatedAt;
     @Column(name = "Expired_At")
     private LocalDateTime expiredAt;
+    @Enumerated(EnumType.STRING)
+    @Column(name = "User_Role", nullable = false)
+    private UserRole role;
 
     @OneToMany(mappedBy = "person", cascade = CascadeType.ALL)
     @JsonManagedReference
