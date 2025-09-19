@@ -1,5 +1,6 @@
 package com.example.dto.lite;
 
+import com.example.enums.UserRole;
 import lombok.AllArgsConstructor;
 import lombok.Builder;
 import lombok.Data;
@@ -15,4 +16,5 @@ public class PersonLiteResponseDto {
     private String firstName;
     private String lastName;
     private String email;
+    private UserRole role;
 }

@@ -8,12 +8,14 @@ import com.example.dto.request.PersonRequestDto;
 import com.example.entity.Account;
 import com.example.entity.Contract;
 import com.example.entity.Person;
+import com.example.enums.UserRole;
 import com.example.mapper.ContractMapper;
 import com.example.mapper.PersonMapper;
 import com.example.repository.PersonRepository;
 import com.example.service.PersonService;
 import lombok.RequiredArgsConstructor;
 import org.springframework.expression.ExpressionException;
+import org.springframework.security.core.userdetails.UsernameNotFoundException;
 import org.springframework.stereotype.Service;
 
 import java.time.LocalDateTime;
@@ -67,6 +69,13 @@ public class PersonServiceImpl implements PersonService {
         return PersonMapper.personMapToDetail (savedPerson, null,null);
     }
     @Override
+    public Person updatedRoleOfPersonByEmail(String email) {
+        return personRepository.findByEmail(email)
+                .orElseThrow(() -> new UsernameNotFoundException (
+                        "Person not found with email: " + email
+                ));
+    }
+    @Override
     public void deletePerson(UUID personId) {
         if (!personRepository.existsById(personId)) {
             throw new RuntimeException ("Person not found");
@@ -102,5 +111,10 @@ public class PersonServiceImpl implements PersonService {
         Person person = personRepository.findByEmail (username)
                 .orElseThrow (()-> new ExpressionException ("Person not found"));
         return PersonMapper.personMapToDetail (person, null,null);
+    }
+    public UserRole checkRoleByEmail(String email){
+        Person person = personRepository.findByEmail (email)
+                .orElseThrow (()-> new ExpressionException ("Person not found"));
+        return person.getRole ();
     }
 }

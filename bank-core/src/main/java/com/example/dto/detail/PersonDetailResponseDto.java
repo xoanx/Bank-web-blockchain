@@ -2,6 +2,7 @@ package com.example.dto.detail;
 
 import com.example.dto.lite.AccountLiteResponseDto;
 import com.example.dto.lite.ContractLiteResponseDto;
+import com.example.enums.UserRole;
 import lombok.AllArgsConstructor;
 import lombok.Builder;
 import lombok.Data;
@@ -27,6 +28,7 @@ public class PersonDetailResponseDto {
     private LocalDateTime createdAt;
     private LocalDateTime updatedAt;
     private LocalDateTime expiredAt;
+    private UserRole role;
 
     private List<AccountLiteResponseDto> accounts;
     private List<ContractLiteResponseDto> contracts;

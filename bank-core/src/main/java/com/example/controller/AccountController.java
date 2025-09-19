@@ -4,6 +4,7 @@ import com.example.dto.detail.AccountDetailResponseDto;
 import com.example.dto.request.AccountRequestDto;
 import com.example.entity.Account;
 import com.example.entity.Person;
+import com.example.enums.UserRole;
 import com.example.repository.AccountRepository;
 import com.example.service.AccountService;
 import com.example.repository.PersonRepository;
@@ -33,15 +34,12 @@ public class AccountController {
     public ResponseEntity<AccountDetailResponseDto> createAccount(
             @PathVariable UUID personId,
             @RequestBody AccountRequestDto accountRequestDto) {
-
         String currentUsername = SecurityContextHolder.getContext().getAuthentication().getName();
-        Person currentPerson = personService.checkRole (currentUsername);
-    //viet 1 service tim role nguoi dung hien tai bang username
-        if (accountRequestDto.getgetRole ().equals("CLIENT") &&        //check role
-                !currentPerson.getId().equals(personId)) {
+        Person currentPerson = personService.updatedRoleOfPersonByEmail(currentUsername);
+        if (currentPerson.getRole() == UserRole.CLIENT &&
+                !currentPerson.getIdPerson().equals(personId)) {
             throw new AccessDeniedException("CLIENT chỉ được phép tạo account cho chính mình");
         }
-
         return ResponseEntity.ok(accountService.createAccount(accountRequestDto, personId));
     }
 
