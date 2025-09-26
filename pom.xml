@@ -13,6 +13,7 @@
         <module>bank-core</module>
         <module>security</module>
         <module>app</module>
+        <module>blockchain-core</module>
     </modules>
 
     <!--dependencies-->

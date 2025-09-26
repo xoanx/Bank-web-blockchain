@@ -22,6 +22,7 @@ public class TransactionDetailResponseDto {
     private TransactionType type;
     private TransactionStatus status;
     private LocalDateTime createdAt;
+    private String blockchainTxHash;
 
     private AccountLiteResponseDto fromAccount;
     private AccountLiteResponseDto toAccount;

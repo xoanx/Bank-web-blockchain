@@ -25,6 +25,7 @@ public class AccountDetailResponseDto {
     private String currency;
     private LocalDateTime logInAt;
     private LocalDateTime logOutAt;
+    private String blockchainAddress;
 
     private PersonLiteResponseDto person;
 }

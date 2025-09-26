@@ -19,6 +19,7 @@ public class AccountMapper {
                 .accountStatus (account.getAccountStatus ())
                 .logInAt (account.getLogInAt ())
                 .logOutAt (account.getLogOutAt ())
+                .blockchainAddress (account.getBlockchainAddress ())
                 .person (PersonMapper.personMapToLite (account.getPerson ()))
                 .build();
     }

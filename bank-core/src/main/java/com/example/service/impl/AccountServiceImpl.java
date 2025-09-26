@@ -46,31 +46,6 @@ public class AccountServiceImpl implements AccountService {
         Account savedAccount = accountRepository.save(account);
         return AccountMapper.accountMapToDetail(savedAccount);
     }
-//    @Override
-//    public AccountDetailResponseDto deposit(BigDecimal amount, UUID accountId) {
-//        Account account = accountRepository.findById (accountId)
-//                .orElseThrow (() -> new RuntimeException("Account not found: " + accountId));
-//        if (account.getAccountStatus() != AccountStatus.ACTIVE) {
-//            throw new RuntimeException("Account is not active");
-//        }
-//        account.setBalance(account.getBalance().add(amount));
-//        Transaction transaction = Transaction.builder ()
-//                .reference (UUID.randomUUID ().toString ())
-//                .amount (amount)
-//                .type (TransactionType.DEPOSIT)
-//                .status (TransactionStatus.SUCCESS)
-//                .createdAt (LocalDateTime.now ())
-//                .fromAccount (null)
-//                .toAccount (account)
-//                .build ();
-//        Transaction savedTransaction = transactionRepository.save(transaction);
-//        LedgerEntry ledgerEntry = LedgerEntry.builder ()
-//                .amount (amount)
-//                .entryType (En)
-//                .build ();
-//        Account savedAccount = accountRepository.save(account);
-//        return AccountMapper.accountMapToDetail(savedAccount);
-//    }
     @Override
     public List<AccountDetailResponseDto> searchAccount(AccountRequestDto accountRequestDto){
         List<Account> accounts = accountRepository.findAll ()
@@ -121,38 +96,6 @@ public class AccountServiceImpl implements AccountService {
         account.setAccountStatus(AccountStatus.INACTIVE);
         accountRepository.save(account);
     }
-//    @Override
-//    public AccountDetailResponseDto withdraw(UUID accountId, BigDecimal amount){
-//        Account account = accountRepository.findById (accountId)
-//                .orElseThrow(() -> new RuntimeException("Account not found: " + accountId));
-//        if(account.getAccountStatus () != AccountStatus.ACTIVE) {
-//            throw new RuntimeException("Account is not active");
-//        }
-//        if (account.getBalance ().compareTo(amount) < 0) {
-//            throw new RuntimeException("Account balance is not enough balance to transfer to another");
-//        }
-//        account.setBalance (account.getBalance ().subtract (amount));
-//        Transaction transaction = Transaction.builder ()
-//                .reference (UUID.randomUUID ().toString ())
-//                .amount (amount)
-//                .type (TransactionType.WITHDRAW)
-//                .status (TransactionStatus.SUCCESS)
-//                .createdAt (LocalDateTime.now ())
-//                .fromAccount (account)
-//                .build ();
-//        Transaction savedTransaction = transactionRepository.save (transaction);
-//        LedgerEntry ledgerEntry = LedgerEntry.builder()
-//                .amount (amount)
-//                .entryType (EntryType.DEBIT)
-//                .balanceAfter (account.getBalance ())
-//                .createdAt (LocalDateTime.now ())
-//                .account (account)
-//                .transaction (savedTransaction)
-//                .build();
-//        ledgerEntryRepository.save (ledgerEntry);
-//        Account savedAccount = accountRepository.save(account);
-//        return AccountMapper.accountMapToDetail(savedAccount);
-//    }
     @Override
     public AccountDetailResponseDto withdraw(UUID accountId, BigDecimal amount) {
         throw new UnsupportedOperationException("Use TransactionService for withdraw");

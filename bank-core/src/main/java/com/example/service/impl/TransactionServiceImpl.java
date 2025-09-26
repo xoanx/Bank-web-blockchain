@@ -1,5 +1,6 @@
 package com.example.service.impl;
 
+import com.example.blockchain.service.BlockchainService;
 import com.example.dto.detail.TransactionDetailResponseDto;
 import com.example.dto.request.BeneficiaryRequestDto;
 import com.example.dto.request.TransactionRequestDto;
@@ -19,8 +20,6 @@ import com.example.service.TransactionService;
 import com.example.specidication.TransactionSpecification;
 import jakarta.transaction.Transactional;
 import lombok.RequiredArgsConstructor;
-import org.springframework.data.domain.Pageable;
-import org.springframework.data.jpa.domain.Specification;
 import org.springframework.stereotype.Service;
 
 import java.math.BigDecimal;
@@ -38,7 +37,7 @@ public class TransactionServiceImpl implements TransactionService {
     private final AccountRepository accountRepository;
     private final LedgerEntryRepository ledgerEntryRepository;
     private final BeneficiaryService beneficiaryService;
-
+    private final BlockchainService blockchainService;
     @Transactional
     public TransactionDetailResponseDto transfer(TransactionRequestDto transactionRequestDto, boolean saveBeneficiary) {
         if(transactionRequestDto.getFromAccount ().equals(transactionRequestDto.getToAccount ())) {
@@ -71,22 +70,45 @@ public class TransactionServiceImpl implements TransactionService {
                 .createdAt (LocalDateTime.now ())
                 .build();
         Transaction savedTransaction = transactionRepository.save(transaction);
-        ledgerEntryRepository.save (LedgerEntry.builder ()
-                .amount (transactionRequestDto.getAmount ())
-                .entryType(EntryType.DEBIT)
-                .balanceAfter(fromAccount.getBalance())
-                .createdAt(LocalDateTime.now())
-                .account(fromAccount)
-                .transaction(savedTransaction)
-                .build ());
-        ledgerEntryRepository.save(LedgerEntry.builder()
-                .amount(transactionRequestDto.getAmount ())
-                .entryType(EntryType.CREDIT)
-                .balanceAfter(toAccount.getBalance())
-                .createdAt(LocalDateTime.now())
-                .account(toAccount)
-                .transaction(savedTransaction)
-                .build());
+        //xử lý refund nếu gặp TH pending/success
+        try {
+            // gọi blockchain service
+            String txHash = blockchainService.makePayment (
+                    toAccount.getBlockchainAddress (),
+                    transactionRequestDto.getAmount ().toBigInteger (),
+                    "transfer:" + savedTransaction.getId ().toString ()
+            );
+            savedTransaction.setStatus (TransactionStatus.SUCCESS);
+            savedTransaction.setBlockchainTxHash (txHash);
+
+            // cộng tiền cho người nhận
+            toAccount.setBalance (toAccount.getBalance ().add (transactionRequestDto.getAmount ()));
+            accountRepository.save (toAccount);
+
+            ledgerEntryRepository.save (LedgerEntry.builder ()
+                    .amount (transactionRequestDto.getAmount ())
+                    .entryType (EntryType.DEBIT)
+                    .balanceAfter (fromAccount.getBalance ())
+                    .createdAt (LocalDateTime.now ())
+                    .account (fromAccount)
+                    .transaction (savedTransaction)
+                    .build ());
+
+            ledgerEntryRepository.save (LedgerEntry.builder ()
+                    .amount (transactionRequestDto.getAmount ())
+                    .entryType (EntryType.CREDIT)
+                    .balanceAfter (toAccount.getBalance ())
+                    .createdAt (LocalDateTime.now ())
+                    .account (toAccount)
+                    .transaction (savedTransaction)
+                    .build ());
+        } catch (Exception e){
+            fromAccount.setBalance(fromAccount.getBalance().add(transactionRequestDto.getAmount()));
+            accountRepository.save(fromAccount);
+
+            savedTransaction.setStatus(TransactionStatus.FAILED);
+            savedTransaction.setBlockchainTxHash("ERROR:" + e.getMessage());
+        }
         //save benefication
         if(saveBeneficiary){
             beneficiaryService.addBeneficiary (
@@ -137,24 +159,33 @@ public class TransactionServiceImpl implements TransactionService {
         if (account.getBalance().compareTo(amount) < 0) {
             throw new RuntimeException("Insufficient balance");
         }
+
         account.setBalance(account.getBalance().subtract(amount));
-        Transaction transaction = Transaction.builder()
-                .reference(UUID.randomUUID().toString())
-                .amount(amount)
-                .type(TransactionType.WITHDRAW)
-                .status(TransactionStatus.SUCCESS)
-                .createdAt(LocalDateTime.now())
-                .fromAccount(account)
-                .build();
-        Transaction savedTransaction = transactionRepository.save(transaction);
-        ledgerEntryRepository.save(LedgerEntry.builder()
-                .amount(amount)
-                .entryType(EntryType.DEBIT)
-                .balanceAfter(account.getBalance())
-                .createdAt(LocalDateTime.now())
-                .account(account)
-                .transaction(savedTransaction)
-                .build());
+        accountRepository.save(account);
+        try{
+            //blockchain wwithdraw
+            String txHash = blockchainService.makePayment(
+                    BANK
+            )
+            Transaction transaction = Transaction.builder()
+                    .reference(UUID.randomUUID().toString())
+                    .amount(amount)
+                    .type(TransactionType.WITHDRAW)
+                    .status(TransactionStatus.SUCCESS)
+                    .createdAt(LocalDateTime.now())
+                    .fromAccount(account)
+                    .build();
+
+            Transaction savedTransaction = transactionRepository.save(transaction);
+
+            ledgerEntryRepository.save(LedgerEntry.builder()
+                    .amount(amount)
+                    .entryType(EntryType.DEBIT)
+                    .balanceAfter(account.getBalance())
+                    .createdAt(LocalDateTime.now())
+                    .account(account)
+                    .transaction(savedTransaction)
+                    .build());
 
         return TransactionMapper.transactionDetailResponseDto (savedTransaction);
     }

@@ -16,6 +16,7 @@ public class TransactionMapper {
                 .type (transaction.getType ())
                 .status (transaction.getStatus ())
                 .createdAt (transaction.getCreatedAt ())
+                .blockchainTxHash (transaction.getBlockchainTxHash ())
                 .fromAccount (AccountMapper.accountMapToLite (transaction.getFromAccount ()))
                 .toAccount (AccountMapper.accountMapToLite (transaction.getToAccount ()))
                 .build ();

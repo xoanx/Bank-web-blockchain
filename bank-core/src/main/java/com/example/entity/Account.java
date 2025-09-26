@@ -42,6 +42,8 @@ public class Account {
     private BigDecimal balance;
     @Column(name = "currency", nullable = false)
     private String currency;
+    @Column(name = "blockchain_address", length = 50, nullable = false)
+    private String blockchainAddress;
 
     @ManyToOne
     @JoinColumn(name = "owner_person", nullable = false)

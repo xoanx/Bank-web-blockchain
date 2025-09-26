@@ -39,6 +39,8 @@ public class Transaction {
     @ManyToOne
     @JoinColumn(name = "To_account_id", nullable = false)
     private Account toAccount;
+    @JoinColumn(name = "block_chain_Tx_hash", nullable = false)
+    private String blockchainTxHash;
 
     @PrePersist
     protected void onCreate() {
