@@ -37,7 +37,6 @@ public class TransactionServiceImpl implements TransactionService {
     private final AccountRepository accountRepository;
     private final LedgerEntryRepository ledgerEntryRepository;
     private final BeneficiaryService beneficiaryService;
-    private final BlockchainService blockchainService;
     @Transactional
     public TransactionDetailResponseDto transfer(TransactionRequestDto transactionRequestDto, boolean saveBeneficiary) {
         if(transactionRequestDto.getFromAccount ().equals(transactionRequestDto.getToAccount ())) {

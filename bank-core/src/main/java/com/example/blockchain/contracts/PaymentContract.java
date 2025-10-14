@@ -49,12 +49,12 @@ public class PaymentContract extends Contract {
     ;
 
     @Deprecated
-    protected PaymentContract (String contractAddress, Web3j web3j, Credentials credentials,
+    protected PaymentContract(String contractAddress, Web3j web3j, Credentials credentials,
             BigInteger gasPrice, BigInteger gasLimit) {
         super(BINARY, contractAddress, web3j, credentials, gasPrice, gasLimit);
     }
 
-    protected PaymentContract (String contractAddress, Web3j web3j, Credentials credentials,
+    protected PaymentContract(String contractAddress, Web3j web3j, Credentials credentials,
             ContractGasProvider contractGasProvider) {
         super(BINARY, contractAddress, web3j, credentials, contractGasProvider);
     }
@@ -65,7 +65,7 @@ public class PaymentContract extends Contract {
         super(BINARY, contractAddress, web3j, transactionManager, gasPrice, gasLimit);
     }
 
-    protected PaymentContract (String contractAddress, Web3j web3j,
+    protected PaymentContract(String contractAddress, Web3j web3j,
             TransactionManager transactionManager, ContractGasProvider contractGasProvider) {
         super(BINARY, contractAddress, web3j, transactionManager, contractGasProvider);
     }
@@ -119,19 +119,19 @@ public class PaymentContract extends Contract {
     }
 
     @Deprecated
-    public static PaymentContract load(String contractAddress, Web3j web3j,
-            Credentials credentials, BigInteger gasPrice, BigInteger gasLimit) {
-        return new PaymentContract (contractAddress, web3j, credentials, gasPrice, gasLimit);
+    public static PaymentContract load(String contractAddress, Web3j web3j, Credentials credentials,
+            BigInteger gasPrice, BigInteger gasLimit) {
+        return new PaymentContract(contractAddress, web3j, credentials, gasPrice, gasLimit);
     }
 
     @Deprecated
     public static PaymentContract load(String contractAddress, Web3j web3j,
             TransactionManager transactionManager, BigInteger gasPrice, BigInteger gasLimit) {
-        return new PaymentContract (contractAddress, web3j, transactionManager, gasPrice, gasLimit);
+        return new PaymentContract(contractAddress, web3j, transactionManager, gasPrice, gasLimit);
     }
 
-    public static PaymentContract load(String contractAddress, Web3j web3j,
-            Credentials credentials, ContractGasProvider contractGasProvider) {
+    public static PaymentContract load(String contractAddress, Web3j web3j, Credentials credentials,
+            ContractGasProvider contractGasProvider) {
         return new PaymentContract(contractAddress, web3j, credentials, contractGasProvider);
     }
 

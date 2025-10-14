@@ -129,6 +129,20 @@
 							<version>1.18.32</version>
 						</path>
 					</annotationProcessorPaths>
+
+				</configuration>
+			</plugin>
+			<plugin>
+				<groupId>org.web3j</groupId>
+				<artifactId>core</artifactId>
+				<version>4.8.7</version>
+				<configuration>
+					<!--blockchain-core-->
+					<sourceDestination>../blockchain-core/artifacts/contracts</sourceDestination>
+					<!--make a file.java in bank-core-->
+					<outputDirectory>${project.basedir}/src/main/java</outputDirectory>
+					<!--package .abi, .bin-->
+					<packageName>com.example.blockchain.contracts</packageName>
 				</configuration>
 			</plugin>
 		</plugins>
